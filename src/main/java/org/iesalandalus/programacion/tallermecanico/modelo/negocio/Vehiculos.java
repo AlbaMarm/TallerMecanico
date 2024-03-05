@@ -33,6 +33,7 @@ public class Vehiculos {
         if (!coleccionVehiculos.remove(vehiculo)) {
             throw new OperationNotSupportedException("No existe ningún vehículo con esa matrícula.");
         }
+        coleccionVehiculos.remove(vehiculo);
     }
 
 }

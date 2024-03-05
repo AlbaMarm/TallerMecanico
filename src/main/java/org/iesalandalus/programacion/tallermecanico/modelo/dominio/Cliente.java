@@ -3,7 +3,7 @@ package org.iesalandalus.programacion.tallermecanico.modelo.dominio;
 import java.util.Objects;
 
 public class Cliente {
-    private static final String ER_NOMBRE = "(([A-Z][a-záéíóú]+)( [A-Z][a-záéíóú]+)*)";
+    private static final String ER_NOMBRE = "[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?: [A-ZÁÉÍÓÚ][a-záéíóúñ]+)*+";
     private static final String ER_DNI = "\\d{8}[A-Z]";
     private static final String ER_TELEFONO = "\\d{9}";
     String nombre;
@@ -67,10 +67,9 @@ public class Cliente {
 
     private static boolean comprobarLetraDni(String dni){
         String letraDni = "TRWAGMYFPDXBNJZSQVHLCKE";
-        char letra = Character.toUpperCase(dni.charAt(8));
-        String numeroDni = dni.substring(0,8);
-        int numero = Integer.parseInt(numeroDni);
-        return letra == letraDni.charAt(numero%23);
+        int numero = Integer.parseInt(dni.substring(0, 8));
+        char letra = dni.charAt(8);
+        return letra == letraDni.charAt(numero % 23);
     }
 
     @Override

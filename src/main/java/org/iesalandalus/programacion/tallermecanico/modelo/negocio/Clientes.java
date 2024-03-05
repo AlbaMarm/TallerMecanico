@@ -15,7 +15,7 @@ public class Clientes {
     public List<Cliente>get(){
         return new ArrayList<>(coleccionClientes);
     }
-    public void insertar (Cliente cliente) throws OperationNotSupportedException{
+    public void insertar(Cliente cliente) throws OperationNotSupportedException{
         Objects.requireNonNull(cliente, "No se puede insertar un cliente nulo.");
         if (coleccionClientes.contains(cliente)){
             throw new OperationNotSupportedException("Ya existe un cliente con ese DNI.");
@@ -50,6 +50,7 @@ public class Clientes {
         if (!coleccionClientes.remove(cliente)) {
             throw new OperationNotSupportedException("No existe ningún cliente con ese DNI.");
         }
+        coleccionClientes.remove(cliente);
     }
 
 

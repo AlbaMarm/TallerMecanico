@@ -3,12 +3,14 @@ package org.iesalandalus.programacion.tallermecanico.modelo.dominio;
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class Revision {
-    private static final float PRECIO_HORA = 30.0f;
-    private static final float PRECIO_DIA = 10.0f;
-    public static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final float PRECIO_HORA = 30.0F;
+    private static final float PRECIO_DIA = 10.0F;
+    private static final float PRECIO_MATERIAL = 1.5F;
+    static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Cliente cliente;
@@ -20,15 +22,18 @@ public class Revision {
         setCliente(cliente);
         setVehiculo(vehiculo);
         setFechaInicio(fechaInicio);
+        fechaFin = null;
+        horas = 0;
+        precioMaterial = 0;
     }
     public Revision(Revision revision){
         Objects.requireNonNull(revision, "La revisión no puede ser nula.");
-        this.cliente = new Cliente(revision.cliente);
-        this.vehiculo = revision.vehiculo;
-        this.fechaInicio = revision.fechaInicio;
-        this.fechaFin = revision.fechaFin;
-        this.horas = revision.horas;
-        this.precioMaterial = revision.precioMaterial;
+        cliente = new Cliente(revision.cliente);
+        vehiculo = revision.vehiculo;
+        fechaInicio = revision.fechaInicio;
+        fechaFin = revision.fechaFin;
+        horas = revision.horas;
+        precioMaterial = revision.precioMaterial;
     }
 
     private void setCliente(Cliente cliente) {
@@ -75,13 +80,7 @@ public class Revision {
         return horas;
     }
     private float getDias(){
-        float dias;
-        if (fechaFin == null){
-            dias = 0;
-        } else {
-            dias = (float) fechaInicio.until(fechaFin).getDays();
-        }
-        return dias;
+        return (estaCerrada()) ? (int) ChronoUnit.DAYS.between(fechaInicio, fechaFin) : 0;
     }
     public void anadirHoras(int horas) throws OperationNotSupportedException {
         Objects.requireNonNull(horas, "Las horas no pueden ser nulas.");
@@ -119,7 +118,7 @@ public class Revision {
         float precioHoras  = PRECIO_HORA * getHoras();
         float precioDias = PRECIO_DIA * getDias();
         float precioFijo = precioDias + precioHoras;
-        float precioMaterial = getPrecioMaterial() * 1.5f;
+        float precioMaterial = getPrecioMaterial() * PRECIO_MATERIAL;
         return precioFijo + precioMaterial;
     }
 

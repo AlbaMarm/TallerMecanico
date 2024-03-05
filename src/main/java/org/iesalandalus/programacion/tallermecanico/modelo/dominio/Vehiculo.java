@@ -4,8 +4,8 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public record Vehiculo(String marca, String modelo, String matricula) {
-    private static final String ER_MARCA = "[A-Z]+[a-z]*([ -]?[A-Z][a-z]+)*";
-    private static final String ER_MATRICULA = "\\d{4}[^AEIOU]{3}";
+    private static final String ER_MARCA = "[A-Z][a-z]+(?:[- ]?[A-Z][a-z]+)?|[A-Z]*";
+    private static final String ER_MATRICULA = "\\d{4}[^\\W_AEIOUa-z]{3}";
 
 
     public Vehiculo{
@@ -70,6 +70,6 @@ public record Vehiculo(String marca, String modelo, String matricula) {
 
     @Override
     public String toString() {
-        return String.format("%s %s - %s", this.marca, this.modelo, this.matricula);
+        return String.format("%s %s - %s", marca, modelo, matricula);
     }
 }
